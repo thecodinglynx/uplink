@@ -85,7 +85,11 @@ export class Persistence {
     // Store schema version in meta if absent
     const existing = await this.adapter.get<{ schemaVersion: number }>(META_STORE, 'schema');
     if (!existing) {
-      await this.adapter.put(META_STORE, 'schema', this.wrapPayload({ schemaVersion: SCHEMA_VERSION }));
+      await this.adapter.put(
+        META_STORE,
+        'schema',
+        this.wrapPayload({ schemaVersion: SCHEMA_VERSION }),
+      );
     }
   }
 
@@ -101,7 +105,7 @@ export class Persistence {
       checksum: computeChecksum(serialized),
       length: serialized.length,
       timestamp: Date.now(),
-      payload
+      payload,
     };
   }
 
@@ -155,7 +159,7 @@ export class Persistence {
   async runMigrations(migrations: Migration[]): Promise<void> {
     await this.init();
     let version = await this.getSchemaVersion();
-    const ordered = migrations.filter(m => m.from >= version).sort((a, b) => a.from - b.from);
+    const ordered = migrations.filter((m) => m.from >= version).sort((a, b) => a.from - b.from);
     for (const m of ordered) {
       if (m.from !== version) continue; // skip non-matching start
       await m.run(this);
@@ -184,5 +188,5 @@ export const initialMigration: Migration = {
   to: 1,
   async run() {
     // no-op; initial schema baseline
-  }
+  },
 };

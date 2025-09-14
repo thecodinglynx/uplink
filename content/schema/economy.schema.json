@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "economy.schema.json",
+  "title": "EconomyConfig",
+  "type": "object",
+  "required": ["difficultyMultipliers", "pricingCurves", "upgradeCostScaling", "payoutBalancing", "toolVersionPerformanceIncrement", "reputationDiscountFactors", "decayStep", "traceBaseRatesByDifficulty", "version"],
+  "properties": {
+    "difficultyMultipliers": { "type": "object" },
+    "pricingCurves": { "type": "object" },
+    "upgradeCostScaling": { "type": "number" },
+    "payoutBalancing": { "type": "object" },
+    "toolVersionPerformanceIncrement": { "type": "number", "minimum": 0.1 },
+    "reputationDiscountFactors": { "type": "object" },
+    "decayStep": { "type": "number" },
+    "traceBaseRatesByDifficulty": { "type": "object" },
+    "version": { "type": "integer", "minimum": 1 }
+  }
+}

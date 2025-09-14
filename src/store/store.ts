@@ -8,9 +8,9 @@ export const store = configureStore({
   reducer: {
     profiles: profilesReducer,
     missions: missionsReducer,
-    ui: uiReducer
+    ui: uiReducer,
   },
-  middleware: getDefault => getDefault({ serializableCheck: true, immutableCheck: true })
+  middleware: (getDefault) => getDefault({ serializableCheck: true, immutableCheck: true }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

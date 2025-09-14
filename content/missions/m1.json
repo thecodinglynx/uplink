@@ -1,0 +1,1 @@
+{"id":"m1","title":"Test Mission","type":"standard","factions":["fac1"],"difficultyBand":"EASY","basePayoutRange":[100,150],"objectives":[{"id":"o1","type":"scan","targetCount":1}],"defenseTemplate":[{"archetype":"FIREWALL","minTier":1,"maxTier":1}],"seedMode":"FIXED","version":1}

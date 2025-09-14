@@ -7,7 +7,7 @@ export interface UIState {
 
 const initialState: UIState = {
   theme: 'dark',
-  layoutDirty: false
+  layoutDirty: false,
 };
 
 const uiSlice = createSlice({
@@ -22,8 +22,8 @@ const uiSlice = createSlice({
     },
     clearLayoutDirty(state) {
       state.layoutDirty = false;
-    }
-  }
+    },
+  },
 });
 
 export const { setTheme, markLayoutDirty, clearLayoutDirty } = uiSlice.actions;

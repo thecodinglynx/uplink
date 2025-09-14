@@ -9,7 +9,7 @@ export interface ProfilesState {
 
 const initialState: ProfilesState = {
   entities: {},
-  authStatus: 'idle'
+  authStatus: 'idle',
 };
 
 const profilesSlice = createSlice({
@@ -21,8 +21,8 @@ const profilesSlice = createSlice({
     },
     upsertProfile(state, action: PayloadAction<ProfileDefinition>) {
       state.entities[action.payload.id] = action.payload;
-    }
-  }
+    },
+  },
 });
 
 export const { setActiveProfile, upsertProfile } = profilesSlice.actions;

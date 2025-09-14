@@ -7,7 +7,7 @@ describe('store initial state', () => {
     expect(state).toMatchObject({
       profiles: { entities: {}, authStatus: 'idle' },
       missions: { catalog: {}, filters: {} },
-      ui: { theme: 'dark', layoutDirty: false }
+      ui: { theme: 'dark', layoutDirty: false },
     });
   });
 });

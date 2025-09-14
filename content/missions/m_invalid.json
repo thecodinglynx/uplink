@@ -1,0 +1,1 @@
+{"id":"m_invalid","title":"Bad Mission","type":"standard","factions":[],"difficultyBand":"EASY","basePayoutRange":[10,20],"defenseTemplate":[{"archetype":"FIREWALL","minTier":1,"maxTier":1}],"seedMode":"FIXED","version":1}

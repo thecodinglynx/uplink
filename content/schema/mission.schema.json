@@ -1,0 +1,83 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "mission.schema.json",
+  "title": "MissionDefinition",
+  "type": "object",
+  "required": ["id", "title", "type", "factions", "difficultyBand", "basePayoutRange", "objectives", "defenseTemplate", "seedMode", "version"],
+  "properties": {
+    "id": { "type": "string" },
+    "title": { "type": "string" },
+    "type": { "type": "string" },
+    "factions": { "type": "array", "items": { "type": "string" } },
+    "difficultyBand": { "enum": ["EASY", "MID", "HARD", "ELITE"] },
+    "basePayoutRange": { "type": "array", "items": { "type": "number" }, "minItems": 2, "maxItems": 2 },
+    "objectives": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "targetCount"],
+        "properties": {
+          "id": { "type": "string" },
+          "type": { "enum": ["exfiltrate", "modify", "plant", "scan", "analyze"] },
+          "targetCount": { "type": "integer", "minimum": 1 },
+          "partialBuckets": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["threshold", "payoutFraction"],
+              "properties": {
+                "threshold": { "type": "integer", "minimum": 1 },
+                "payoutFraction": { "type": "number", "minimum": 0, "maximum": 1 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "bonusConditions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "conditionType", "bonusPayout", "description"],
+        "properties": {
+          "id": { "type": "string" },
+          "conditionType": { "enum": ["time", "noTraceSpike", "noFailure", "completeAll"] },
+          "thresholds": { "type": "array", "items": { "type": "number" } },
+          "bonusPayout": { "type": "number", "minimum": 0 },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "defenseTemplate": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["archetype", "minTier", "maxTier"],
+        "properties": {
+          "archetype": { "enum": ["FIREWALL", "ICE_SENTINEL", "ENCRYPTION_LAYER", "TRACE_ACCELERATOR", "HONEYTRAP"] },
+          "minTier": { "type": "integer", "minimum": 1 },
+          "maxTier": { "type": "integer", "minimum": 1 },
+          "highNoise": { "type": "boolean" }
+        }
+      }
+    },
+    "reputationEffects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["factionId", "delta", "on"],
+        "properties": {
+          "factionId": { "type": "string" },
+          "delta": { "type": "integer" },
+          "on": { "enum": ["success", "failure"] }
+        }
+      }
+    },
+    "gates": { "type": "object" },
+    "abandonment": { "type": "object" },
+    "timeConstraints": { "type": "object" },
+    "seedMode": { "enum": ["FIXED", "RANDOM", "HASH_TITLE"] },
+    "version": { "type": "integer", "minimum": 1 }
+  }
+}

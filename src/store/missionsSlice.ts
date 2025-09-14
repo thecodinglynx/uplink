@@ -9,7 +9,7 @@ export interface MissionsState {
 
 const initialState: MissionsState = {
   catalog: {},
-  filters: {}
+  filters: {},
 };
 
 const missionsSlice = createSlice({
@@ -24,8 +24,8 @@ const missionsSlice = createSlice({
     },
     setMissionFilters(state, action: PayloadAction<MissionsState['filters']>) {
       state.filters = action.payload;
-    }
-  }
+    },
+  },
 });
 
 export const { hydrateMissions, setActiveMission, setMissionFilters } = missionsSlice.actions;

@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { Persistence, createInMemoryAdapter, SCHEMA_VERSION, Migration } from '../src/persistence/db';
+import {
+  Persistence,
+  createInMemoryAdapter,
+  SCHEMA_VERSION,
+  Migration,
+} from '../src/persistence/db';
 
 interface TestProfileState {
   credits: number;
@@ -56,8 +61,8 @@ describe('migration path', () => {
         async run(persist) {
           // Example: no structural change, placeholder
           await persist.atomicSaveProfileState('__migration_marker__', { done: true });
-        }
-      }
+        },
+      },
     ];
     await p.runMigrations(migrations);
     const newVersion = await p.getSchemaVersion();

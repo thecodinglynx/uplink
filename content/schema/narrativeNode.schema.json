@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "narrativeNode.schema.json",
+  "title": "NarrativeNodeDefinition",
+  "type": "object",
+  "required": ["id", "act", "version"],
+  "properties": {
+    "id": { "type": "string" },
+    "act": { "type": "integer", "minimum": 1 },
+    "branchPointFlagSet": { "type": "array", "items": { "type": "string" } },
+    "prerequisites": { "type": "array" },
+    "resultingFlags": { "type": "array", "items": { "type": "string" } },
+    "isEnding": { "type": "boolean" },
+    "codename": { "type": "string" },
+    "version": { "type": "integer", "minimum": 1 }
+  }
+}
