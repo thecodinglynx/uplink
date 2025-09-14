@@ -1,4 +1,4 @@
-import { evaluateFlagExpression } from '@domain/types';
+import { evaluateFlagExpression } from '../types';
 export function createNarrativeState(initialFlags = []) {
     return {
         flags: new Set(initialFlags),

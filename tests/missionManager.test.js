@@ -1,21 +1,16 @@
 import { describe, it, expect } from 'vitest';
-import { makeId, DifficultyBand, } from '@domain/types';
-import { getMissionAvailabilities, acceptMission, abandonMission, purgeExpiredMissions, } from '@domain/mission/missionManager';
+import { makeId, DifficultyBand, } from '../src/domain/types';
+import { getMissionAvailabilities, acceptMission, abandonMission, purgeExpiredMissions, } from '../src/domain/mission/missionManager';
 function baseProfile() {
     return {
         id: makeId('p1'),
         username: 'user',
-        passwordHash: 'x',
-        credits: 100,
+        passwordHash: 'h',
+        credits: 1000,
         hardwareTierId: makeId('tier1'),
-        ownedToolVersions: [
-            { toolId: makeId('scanner'), version: 1 },
-            { toolId: makeId('cracker'), version: 2 },
-        ],
+        ownedToolVersions: [{ toolId: makeId('scanner'), version: 1 }],
         narrativeFlags: ['intro_done'],
-        factionReputations: [
-            { factionId: makeId('corpA'), value: 10, lastUpdated: Date.now() },
-        ],
+        factionReputations: [],
         endingsUnlocked: [],
         layoutPreferences: { panes: [], theme: 'dark' },
         stats: { missionsCompleted: 0, completionPercent: 0 },

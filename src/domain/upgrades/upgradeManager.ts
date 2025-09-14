@@ -5,7 +5,7 @@ import {
   type ToolDefinition,
   type ToolId,
   type HardwareTierId,
-} from '@domain/types';
+} from '../types';
 
 export interface UpgradeResult {
   profile: ProfileDefinition;

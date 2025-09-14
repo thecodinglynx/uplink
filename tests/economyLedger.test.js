@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { makeId, ToolCategory, } from '@domain/types';
-import { createLedger, earnCredits, spendCredits, applyFactionDiscount, } from '@domain/economy/ledger';
+import { makeId, ToolCategory, } from '../src/domain/types';
+import { createLedger, earnCredits, spendCredits, applyFactionDiscount, } from '../src/domain/economy/ledger';
 function profile() {
     return {
         id: makeId('p1'),

@@ -1,12 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { makeId } from '@domain/types';
-import { createSession } from '@domain/hacking/engine';
+import { makeId } from '../src/domain/types';
+import { createSession } from '../src/domain/hacking/engine';
 import {
   createLog,
   startScrub,
   advanceScrubbing,
   computeDetectionWeight,
-} from '@domain/hacking/logs';
+} from '../src/domain/hacking/logs';
 
 describe('log system & scrub mechanic', () => {
   it('creates logs with categories and initiates scrub scaling by size', () => {

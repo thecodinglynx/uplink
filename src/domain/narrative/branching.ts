@@ -1,5 +1,5 @@
-import type { NarrativeNodeDefinition, NarrativeNodeId } from '@domain/types';
-import { evaluateFlagExpression } from '@domain/types';
+import type { NarrativeNodeDefinition, NarrativeNodeId } from '../types';
+import { evaluateFlagExpression } from '../types';
 
 export interface NarrativeState {
   flags: Set<string>;

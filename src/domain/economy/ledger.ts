@@ -5,7 +5,7 @@ import {
   type TransactionId,
   type FactionDefinition,
   type ToolCategory,
-} from '@domain/types';
+} from '../types';
 
 export interface LedgerState {
   transactions: TransactionRecord[];

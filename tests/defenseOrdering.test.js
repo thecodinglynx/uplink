@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { DefenseArchetype } from '@domain/types';
-import { generateDefenseInstances } from '@domain/defense/ordering';
+import { DefenseArchetype } from '../src/domain/types';
+import { generateDefenseInstances } from '../src/domain/defense/ordering';
 const template = [
     { archetype: DefenseArchetype.FIREWALL, minTier: 1, maxTier: 2 },
     { archetype: DefenseArchetype.ICE_SENTINEL, minTier: 1, maxTier: 3, highNoise: true },

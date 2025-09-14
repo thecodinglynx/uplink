@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { makeId, ToolCategory, } from '@domain/types';
-import { purchaseHardwareUpgrade, purchaseToolVersion, getToolOperationTimeModifier, getHardwareConcurrencySlots, } from '@domain/upgrades/upgradeManager';
+import { makeId, ToolCategory, } from '../src/domain/types';
+import { purchaseHardwareUpgrade, purchaseToolVersion, getToolOperationTimeModifier, getHardwareConcurrencySlots, } from '../src/domain/upgrades/upgradeManager';
 function profile() {
     return {
         id: makeId('p1'),

@@ -1,4 +1,4 @@
-import type { HackingSessionInstance } from '@domain/types';
+import type { HackingSessionInstance } from '../types';
 
 // Applies a one-time adaptive buff to active defenses when trace surpasses threshold.
 // Simple model: if trace percent > 0.5 and defense active or pending, mark adaptiveApplied and

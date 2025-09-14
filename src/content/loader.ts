@@ -30,6 +30,7 @@ function dirFiles(dir: string) {
   if (!fs.existsSync(dir)) return [];
   return fs
     .readdirSync(dir)
+    .sort((a, b) => a.localeCompare(b))
     .filter((f) => f.endsWith('.json'))
     .map((f) => path.join(dir, f));
 }

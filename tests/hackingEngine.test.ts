@@ -1,12 +1,12 @@
 import { describe, it, expect } from 'vitest';
-import { makeId } from '@domain/types';
+import { makeId } from '../src/domain/types';
 import {
   createSession,
   queueToolRun,
   updateSession,
   cancelToolRun,
   sessionActiveRuns,
-} from '@domain/hacking/engine';
+} from '../src/domain/hacking/engine';
 
 describe('hacking engine core', () => {
   it('enforces concurrency and starts queued runs when slots free', () => {

@@ -1,9 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { Persistence, createInMemoryAdapter } from '@persistence/db';
+import { Persistence, createInMemoryAdapter } from '../persistence/db';
 import { recordPersistenceWrite } from '../instrumentation/perf';
 import { profilesReducer } from './profilesSlice';
 import { missionsReducer } from './missionsSlice';
 import { uiReducer } from './uiSlice';
+import { sessionReducer } from './sessionSlice';
+import { ledgerReducer } from './ledgerSlice';
+import { payoutMiddleware } from './middleware/payout';
 
 // Placeholder middleware array for future domain event bus / autosave.
 // Autosave middleware (debounced)
@@ -40,14 +43,21 @@ const autosaveMiddleware = (storeAPI: any) => (next: any) => (action: any) => {
   return result;
 };
 
+// payoutMiddleware imported
+
 export const store = configureStore({
   reducer: {
     profiles: profilesReducer,
     missions: missionsReducer,
     ui: uiReducer,
+    session: sessionReducer,
+    ledger: ledgerReducer,
   },
   middleware: (getDefault) =>
-    getDefault({ serializableCheck: true, immutableCheck: true }).concat(autosaveMiddleware),
+    getDefault({ serializableCheck: true, immutableCheck: true }).concat(
+      autosaveMiddleware,
+      payoutMiddleware,
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

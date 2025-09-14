@@ -1,4 +1,4 @@
-import { makeId, } from '@domain/types';
+import { makeId, } from '../types';
 export function createLedger() {
     return { transactions: [] };
 }

@@ -6,8 +6,8 @@ import type {
   ToolRunInstance,
   ToolRunId,
   DefenseTemplateSlot,
-} from '@domain/types';
-import { generateDefenseInstances } from '@domain/defense/ordering';
+} from '../types';
+import { generateDefenseInstances } from '../defense/ordering';
 import { updateTrace } from './trace';
 import { applyAdaptive } from './adaptive';
 import { recordTick } from '../../instrumentation/perf';

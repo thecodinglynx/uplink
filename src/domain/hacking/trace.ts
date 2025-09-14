@@ -1,4 +1,4 @@
-import type { HackingSessionInstance } from '@domain/types';
+import type { HackingSessionInstance } from '../types';
 
 // Updates the trace meter based on elapsed time & active noise events.
 // Simple model: effectiveRate = baseRate + sum(dynamic) + sum(activeNoiseMagnitudes)

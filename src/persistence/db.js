@@ -1,7 +1,69 @@
 /* Persistence Layer Abstraction (Step 3)
  * IndexedDB-oriented design with in-memory fallback for tests.
  */
-import { createHash } from 'node:crypto';
+// Environment-adaptive SHA-256 hashing.
+// Avoid direct dependency on node:crypto so browser bundles succeed.
+// We try (in order): Web Crypto (crypto.subtle), Node crypto (if available via dynamic require),
+// and finally a lightweight JS fallback (not cryptographically strong but adequate for corruption detection).
+// The API remains synchronous for existing call sites by memoizing async digests where possible; since
+// corruption detection is non-performance critical we use a cached async->sync bridging strategy.
+let _nodeCreateHash = null;
+// Attempt dynamic Node require inside try/catch so Vite can tree-shake / ignore in browser.
+try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const nodeCrypto = require('crypto');
+    if (nodeCrypto?.createHash) {
+        _nodeCreateHash = nodeCrypto.createHash;
+    }
+}
+catch (_) {
+    // ignore – running in browser
+}
+async function sha256Web(data) {
+    const enc = new TextEncoder();
+    const buf = enc.encode(data);
+    const hashBuf = await globalThis.crypto.subtle.digest('SHA-256', buf);
+    const arr = Array.from(new Uint8Array(hashBuf));
+    return arr.map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+function sha256Fallback(data) {
+    // FNV-1a 32-bit adapted & extended to 64-bit hex by mixing.
+    let h1 = 0x811c9dc5;
+    let h2 = 0x811c9dc5;
+    for (let i = 0; i < data.length; i++) {
+        const c = data.charCodeAt(i);
+        h1 ^= c;
+        h1 = (h1 * 0x01000193) >>> 0;
+        h2 ^= c << i % 24;
+        h2 = (h2 * 0x01000197) >>> 0;
+    }
+    const combined = (BigInt(h1) << 32n) ^ BigInt(h2);
+    return combined.toString(16).padStart(16, '0');
+}
+// Simple cache to store promise resolutions for identical inputs (profiles small strings) to keep interface sync-like.
+const asyncCache = new Map();
+export function computeChecksum(serialized) {
+    // Fast path: Node runtime available.
+    if (_nodeCreateHash) {
+        return _nodeCreateHash('sha256').update(serialized).digest('hex');
+    }
+    // Browser with subtle crypto.
+    if (typeof globalThis !== 'undefined' && globalThis.crypto?.subtle) {
+        // Kick off async computation if not cached yet; return fallback meanwhile then replace on next call.
+        if (!asyncCache.has(serialized)) {
+            sha256Web(serialized)
+                .then((h) => asyncCache.set(serialized, h))
+                .catch(() => { });
+            // Provide deterministic placeholder until real hash arrives; use fallback hash.
+            const fallback = sha256Fallback(serialized);
+            asyncCache.set(serialized, fallback);
+            return fallback;
+        }
+        return asyncCache.get(serialized);
+    }
+    // Pure JS fallback.
+    return sha256Fallback(serialized);
+}
 export const SCHEMA_VERSION = 1; // bump when structure changes
 // ---- In-Memory Adapter (used in tests) ----
 class MemoryAdapter {
@@ -35,11 +97,7 @@ class MemoryAdapter {
 export function createInMemoryAdapter() {
     return new MemoryAdapter();
 }
-// ---- Checksum Utility ----
-export function computeChecksum(serialized) {
-    // Node crypto for tests / Node; in browser could use subtle crypto; fallback to simple hash.
-    return createHash('sha256').update(serialized).digest('hex');
-}
+// (Original computeChecksum replaced above with adaptive implementation.)
 // ---- Core API ----
 const PROFILE_STATE_STORE = 'profileState';
 const META_STORE = 'meta';

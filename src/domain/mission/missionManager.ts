@@ -6,18 +6,8 @@ import type {
   HardwareTierId,
   ToolId,
   FactionId,
-} from '@domain/types';
-
-export interface MissionLockReason {
-  code: 'MISSING_FLAG' | 'REPUTATION_LOW' | 'TOOL_VERSION_LOW' | 'HARDWARE_TIER_LOW';
-  detail: string;
-}
-
-export interface MissionAvailability {
-  mission: MissionDefinition;
-  available: boolean;
-  reasons: MissionLockReason[]; // empty if available
-}
+} from '../types';
+import { DifficultyBand } from '../types';
 
 // Pure helper that indexes owned tool versions for quick lookup
 function buildToolVersionMap(profile: ProfileDefinition): Record<string, number> {
@@ -28,6 +18,11 @@ function buildToolVersionMap(profile: ProfileDefinition): Record<string, number>
     if (existing === undefined || entry.version > existing) map[entry.toolId] = entry.version;
   }
   return map;
+}
+
+export interface MissionLockReason {
+  code: 'MISSING_FLAG' | 'REPUTATION_LOW' | 'TOOL_VERSION_LOW' | 'HARDWARE_TIER_LOW';
+  detail: string;
 }
 
 function evaluateGates(
@@ -98,6 +93,12 @@ export interface MissionManagerContext {
   // Track accepted & abandoned mission states keyed by MissionId
   acceptedMissions: Record<MissionId, { acceptedAt: number; abandonment?: { expiresAt?: number } }>;
   // global configuration for abandonment cool-down might be added later
+}
+
+export interface MissionAvailability {
+  mission: MissionDefinition;
+  available: boolean;
+  reasons: MissionLockReason[];
 }
 
 export interface AcceptMissionResult {

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { ProfileDefinition, ProfileId } from '@domain/types';
+import type { ProfileDefinition, ProfileId } from '../domain/types';
 
 export interface ProfilesState {
   entities: Record<string, ProfileDefinition>;

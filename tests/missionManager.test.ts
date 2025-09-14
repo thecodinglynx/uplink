@@ -4,29 +4,24 @@ import {
   DifficultyBand,
   type MissionDefinition,
   type ProfileDefinition,
-} from '@domain/types';
+} from '../src/domain/types';
 import {
   getMissionAvailabilities,
   acceptMission,
   abandonMission,
   purgeExpiredMissions,
-} from '@domain/mission/missionManager';
+} from '../src/domain/mission/missionManager';
 
 function baseProfile(): ProfileDefinition {
   return {
     id: makeId<'ProfileId'>('p1'),
     username: 'user',
-    passwordHash: 'x',
-    credits: 100,
+    passwordHash: 'h',
+    credits: 1000,
     hardwareTierId: makeId<'HardwareTierId'>('tier1'),
-    ownedToolVersions: [
-      { toolId: makeId<'ToolId'>('scanner'), version: 1 },
-      { toolId: makeId<'ToolId'>('cracker'), version: 2 },
-    ],
+    ownedToolVersions: [{ toolId: makeId<'ToolId'>('scanner'), version: 1 }],
     narrativeFlags: ['intro_done'],
-    factionReputations: [
-      { factionId: makeId<'FactionId'>('corpA'), value: 10, lastUpdated: Date.now() },
-    ],
+    factionReputations: [],
     endingsUnlocked: [],
     layoutPreferences: { panes: [], theme: 'dark' },
     stats: { missionsCompleted: 0, completionPercent: 0 },

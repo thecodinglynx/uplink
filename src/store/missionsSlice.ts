@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { MissionDefinition, MissionId } from '@domain/types';
+import type { MissionDefinition, MissionId } from '../domain/types';
 
 export interface MissionsState {
   catalog: Record<string, MissionDefinition>;

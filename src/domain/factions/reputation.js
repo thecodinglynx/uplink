@@ -1,4 +1,4 @@
-import { getReputationLabel } from '@domain/types';
+import { getReputationLabel } from '../types';
 function cloneProfile(profile) {
     return { ...profile, factionReputations: profile.factionReputations.map((r) => ({ ...r })) };
 }

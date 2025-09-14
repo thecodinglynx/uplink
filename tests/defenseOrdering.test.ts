@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { makeId, DefenseArchetype, type DefenseTemplateSlot } from '@domain/types';
-import { generateDefenseInstances } from '@domain/defense/ordering';
+import { makeId, DefenseArchetype, type DefenseTemplateSlot } from '../src/domain/types';
+import { generateDefenseInstances } from '../src/domain/defense/ordering';
 
 const template: DefenseTemplateSlot[] = [
   { archetype: DefenseArchetype.FIREWALL, minTier: 1, maxTier: 2 },

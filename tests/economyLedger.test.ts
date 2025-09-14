@@ -4,13 +4,13 @@ import {
   type ProfileDefinition,
   type FactionDefinition,
   ToolCategory,
-} from '@domain/types';
+} from '../src/domain/types';
 import {
   createLedger,
   earnCredits,
   spendCredits,
   applyFactionDiscount,
-} from '@domain/economy/ledger';
+} from '../src/domain/economy/ledger';
 
 function profile(): ProfileDefinition {
   return {

@@ -11,8 +11,30 @@
     ".": {
       "types": "./src/index.ts",
       "import": "./src/index.ts"
+    },
+    "./simulation": {
+      "types": "./src/simulation/balanceRunner.ts",
+      "import": "./src/simulation/balanceRunner.ts"
     }
   },
+  "files": [
+    "src/domain",
+    "src/store",
+    "src/persistence",
+    "src/simulation",
+    "src/ui",
+    "src/index.ts",
+    "README.md",
+    "docs"
+  ],
+  "keywords": [
+    "gameplay",
+    "simulation",
+    "procedural",
+    "redux",
+    "deterministic",
+    "uplink"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc --project tsconfig.json && vite build",
@@ -26,9 +48,11 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.3",
+    "@types/react-redux": "^7.1.34",
     "ajv": "^8.17.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.30",
@@ -47,6 +71,7 @@
     "prettier": "^3.2.5",
     "typescript": "^5.4.5",
     "vite": "^5.2.0",
+    "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^1.6.0"
   }
 }

@@ -1,6 +1,7 @@
-import { generateDefenseInstances } from '@domain/defense/ordering';
+import { generateDefenseInstances } from '../defense/ordering';
 import { updateTrace } from './trace';
 import { applyAdaptive } from './adaptive';
+import { recordTick } from '../../instrumentation/perf';
 let defenseCounter = 0;
 let toolRunCounter = 0;
 function makeDefenseId() {
@@ -103,8 +104,12 @@ function promoteQueued(session, now, concurrencyLimit) {
     }
 }
 export function updateSession(session, now, concurrencyLimit) {
-    if (session.status !== 'active')
-        return; // no-op if already ended
+    const t0 = performance.now?.() ?? Date.now();
+    if (session.status !== 'active') {
+        const t1 = performance.now?.() ?? Date.now();
+        recordTick(t1 - t0);
+        return;
+    }
     // progress active runs
     for (const run of session.toolRuns) {
         if (run.canceled || run.startTime === 0 || run.progress >= 1)
@@ -145,6 +150,8 @@ export function updateSession(session, now, concurrencyLimit) {
     else if (session.defenses.every((d) => d.status === 'bypassed')) {
         session.status = 'success';
     }
+    const t1 = performance.now?.() ?? Date.now();
+    recordTick(t1 - t0);
 }
 export function sessionActiveRuns(session) {
     return session.toolRuns

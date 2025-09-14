@@ -1,4 +1,4 @@
-import type { HackingSessionInstance, LogId, LogEntry, LogCategory } from '@domain/types';
+import type { HackingSessionInstance, LogId, LogEntry, LogCategory } from '../types';
 
 // Internal scrub metadata per session/log
 interface ScrubMeta {

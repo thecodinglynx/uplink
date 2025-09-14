@@ -12,12 +12,7 @@
     "resolveJsonModule": true,
     "jsx": "react-jsx",
     "baseUrl": "./src",
-    "paths": {
-      "@domain/*": ["domain/*"],
-      "@store/*": ["store/*"],
-      "@persistence/*": ["persistence/*"],
-      "@ui/*": ["ui/*"]
-    },
+    "paths": {},
     "types": ["vitest/globals"]
   },
   "include": [

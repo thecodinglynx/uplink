@@ -4,8 +4,8 @@ import type {
   ReputationChangeRecord,
   FactionId,
   ProfileDefinition,
-} from '@domain/types';
-import { getReputationLabel } from '@domain/types';
+} from '../types';
+import { getReputationLabel } from '../types';
 
 export interface AdjustResult {
   profile: ProfileDefinition; // shallow cloned with updated reputations array

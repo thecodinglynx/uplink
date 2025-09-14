@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { makeId } from '@domain/types';
-import { adjustReputation, applyDecay, getFactionLabel } from '@domain/factions/reputation';
+import { makeId } from '../src/domain/types';
+import { adjustReputation, applyDecay, getFactionLabel } from '../src/domain/factions/reputation';
 function profile() {
     return {
         id: makeId('p1'),

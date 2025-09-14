@@ -5,8 +5,8 @@ import {
   recordPersistenceWrite,
   recordTick,
 } from '../src/instrumentation/perf';
-import { createSession, updateSession, queueToolRun } from '@domain/hacking/engine';
-import { makeId } from '@domain/types';
+import { createSession, updateSession, queueToolRun } from '../src/domain/hacking/engine';
+import { makeId } from '../src/domain/types';
 
 describe('instrumentation metrics', () => {
   it('records tick durations', () => {

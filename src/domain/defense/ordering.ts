@@ -1,4 +1,4 @@
-import { type DefenseLayerInstance, type DefenseTemplateSlot, type DefenseId } from '@domain/types';
+import { type DefenseLayerInstance, type DefenseTemplateSlot, type DefenseId } from '../types';
 
 let defenseCounter = 0;
 function makeDefenseId(): DefenseId {

@@ -5,13 +5,13 @@ import {
   type HardwareTier,
   type ToolDefinition,
   ToolCategory,
-} from '@domain/types';
+} from '../src/domain/types';
 import {
   purchaseHardwareUpgrade,
   purchaseToolVersion,
   getToolOperationTimeModifier,
   getHardwareConcurrencySlots,
-} from '@domain/upgrades/upgradeManager';
+} from '../src/domain/upgrades/upgradeManager';
 
 function profile(): ProfileDefinition {
   return {

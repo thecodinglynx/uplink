@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { makeId } from '@domain/types';
-import { createNarrativeState, evaluateAvailability, chooseNode, } from '@domain/narrative/branching';
+import { makeId } from '../src/domain/types';
+import { createNarrativeState, evaluateAvailability, chooseNode, } from '../src/domain/narrative/branching';
 function node(id, act, extras = {}) {
     return { id: makeId(id), act, version: 1, ...extras };
 }

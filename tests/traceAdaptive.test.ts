@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { makeId } from '@domain/types';
-import { createSession, queueToolRun, updateSession } from '@domain/hacking/engine';
-import { addNoiseEvent } from '@domain/hacking/trace';
+import { makeId } from '../src/domain/types';
+import { createSession, queueToolRun, updateSession } from '../src/domain/hacking/engine';
+import { addNoiseEvent } from '../src/domain/hacking/trace';
 
 describe('trace & adaptive mechanics', () => {
   it('noise events increase trace rate then decay', () => {
