@@ -128,6 +128,7 @@ export interface DefenseLayerInstance {
   currentProgress: number; // 0..1
   status: 'pending' | 'active' | 'bypassed' | 'failed';
   noiseEvents: Array<{ magnitude: number; expiresAt: number }>;
+  highNoise?: boolean; // metadata for ordering/tests
 }
 
 export interface ToolRunInstance {

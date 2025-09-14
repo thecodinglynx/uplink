@@ -5,9 +5,12 @@ import type {
   DefenseId,
   ToolRunInstance,
   ToolRunId,
+  DefenseTemplateSlot,
 } from '@domain/types';
+import { generateDefenseInstances } from '@domain/defense/ordering';
 import { updateTrace } from './trace';
 import { applyAdaptive } from './adaptive';
+import { recordTick } from '../../instrumentation/perf';
 
 // Internal extended tool run with duration tracking
 interface EngineToolRun extends ToolRunInstance {
@@ -40,7 +43,8 @@ export function createSeededRng(seed: number) {
 }
 
 export interface CreateSessionOptions {
-  defenseCount: number; // simple placeholder (later derived from mission template)
+  defenseCount?: number; // legacy simple count
+  template?: DefenseTemplateSlot[]; // preferred path with archetypes
 }
 
 export function createSession(
@@ -50,17 +54,21 @@ export function createSession(
   opts: CreateSessionOptions,
 ): HackingSessionInstance {
   const rng = createSeededRng(seed);
-  const defenses: DefenseLayerInstance[] = [];
-  for (let i = 0; i < opts.defenseCount; i++) {
-    defenses.push({
-      id: makeDefenseId(),
-      archetype: 'FIREWALL' as any, // placeholder archetype until archetype system step
-      tier: 1 + Math.floor(rng() * 2),
-      adaptiveApplied: false,
-      currentProgress: 0,
-      status: 'pending',
-      noiseEvents: [],
-    });
+  let defenses: DefenseLayerInstance[] = [];
+  if (opts.template && opts.template.length) {
+    defenses = generateDefenseInstances(opts.template, { seed, now });
+  } else if (opts.defenseCount) {
+    for (let i = 0; i < opts.defenseCount; i++) {
+      defenses.push({
+        id: makeDefenseId(),
+        archetype: 'FIREWALL' as any,
+        tier: 1 + Math.floor(rng() * 2),
+        adaptiveApplied: false,
+        currentProgress: 0,
+        status: 'pending',
+        noiseEvents: [],
+      });
+    }
   }
   return {
     id: `sess_${missionId}_${Date.now()}` as any,
@@ -139,7 +147,12 @@ export function updateSession(
   now: number,
   concurrencyLimit: number,
 ) {
-  if (session.status !== 'active') return; // no-op if already ended
+  const t0 = performance.now?.() ?? Date.now();
+  if (session.status !== 'active') {
+    const t1 = performance.now?.() ?? Date.now();
+    recordTick(t1 - t0);
+    return;
+  }
   // progress active runs
   for (const run of session.toolRuns as EngineToolRun[]) {
     if (run.canceled || run.startTime === 0 || run.progress >= 1) continue;
@@ -174,6 +187,8 @@ export function updateSession(
   } else if (session.defenses.every((d) => d.status === 'bypassed')) {
     session.status = 'success';
   }
+  const t1 = performance.now?.() ?? Date.now();
+  recordTick(t1 - t0);
 }
 
 export function sessionActiveRuns(session: HackingSessionInstance): ToolRunId[] {
