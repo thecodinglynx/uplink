@@ -9,11 +9,7 @@ import type {
 } from '@domain/types';
 
 export interface MissionLockReason {
-  code:
-    | 'MISSING_FLAG'
-    | 'REPUTATION_LOW'
-    | 'TOOL_VERSION_LOW'
-    | 'HARDWARE_TIER_LOW';
+  code: 'MISSING_FLAG' | 'REPUTATION_LOW' | 'TOOL_VERSION_LOW' | 'HARDWARE_TIER_LOW';
   detail: string;
 }
 
@@ -59,7 +55,7 @@ function evaluateGates(
       if (val < req.min) {
         reasons.push({
           code: 'REPUTATION_LOW',
-            detail: `${req.factionId}:${val}<${req.min}`,
+          detail: `${req.factionId}:${val}<${req.min}`,
         });
       }
     }

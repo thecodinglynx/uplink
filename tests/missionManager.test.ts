@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import { makeId, DifficultyBand, type MissionDefinition, type ProfileDefinition } from '@domain/types';
+import {
+  makeId,
+  DifficultyBand,
+  type MissionDefinition,
+  type ProfileDefinition,
+} from '@domain/types';
 import {
   getMissionAvailabilities,
   acceptMission,
@@ -37,9 +42,7 @@ function simpleMission(id: string, overrides: Partial<MissionDefinition> = {}): 
     factions: [makeId<'FactionId'>('corpA')],
     difficultyBand: DifficultyBand.EASY,
     basePayoutRange: [100, 150],
-    objectives: [
-      { id: makeId<'ObjectiveId'>('o1'), type: 'scan', targetCount: 1 },
-    ],
+    objectives: [{ id: makeId<'ObjectiveId'>('o1'), type: 'scan', targetCount: 1 }],
     defenseTemplate: [],
     seedMode: 'FIXED',
     version: 1,
@@ -59,7 +62,7 @@ describe('missionManager gating', () => {
         ],
       },
     });
-  const ctx = {
+    const ctx = {
       profile,
       missions: [mission],
       factionRepLookup: () => 10,
@@ -76,9 +79,7 @@ describe('missionManager gating', () => {
     const mission = simpleMission('m2', {
       gates: {
         requiredFlags: ['intro_done'],
-        requiredToolVersions: [
-          { toolId: makeId<'ToolId'>('scanner'), minVersion: 1 },
-        ],
+        requiredToolVersions: [{ toolId: makeId<'ToolId'>('scanner'), minVersion: 1 }],
       },
     });
     const ctx: any = {
@@ -86,11 +87,14 @@ describe('missionManager gating', () => {
       missions: [mission],
       factionRepLookup: () => 10,
       now: Date.now(),
-      acceptedMissions: {} as Record<ReturnType<typeof makeId<'MissionId'>>, { acceptedAt: number }> ,
+      acceptedMissions: {} as Record<
+        ReturnType<typeof makeId<'MissionId'>>,
+        { acceptedAt: number }
+      >,
     };
     const result = acceptMission(ctx, mission.id);
     expect(result.ok).toBe(true);
-  expect(ctx.acceptedMissions[mission.id]).toBeDefined();
+    expect(ctx.acceptedMissions[mission.id]).toBeDefined();
   });
 
   it('applies abandonment penalty and removes mission', () => {
@@ -103,14 +107,17 @@ describe('missionManager gating', () => {
       missions: [mission],
       factionRepLookup: () => 0,
       now: Date.now(),
-      acceptedMissions: {} as Record<ReturnType<typeof makeId<'MissionId'>>, { acceptedAt: number }> ,
+      acceptedMissions: {} as Record<
+        ReturnType<typeof makeId<'MissionId'>>,
+        { acceptedAt: number }
+      >,
     };
     const acc = acceptMission(ctx, mission.id);
     expect(acc.ok).toBe(true);
     const ab = abandonMission(ctx, mission.id);
     expect(ab.ok).toBe(true);
     expect(ab.penaltyApplied).toBe(25);
-  expect(ctx.acceptedMissions[mission.id]).toBeUndefined();
+    expect(ctx.acceptedMissions[mission.id]).toBeUndefined();
   });
 
   it('purges expired missions based on hard time', () => {
@@ -125,10 +132,13 @@ describe('missionManager gating', () => {
       missions: [mission],
       factionRepLookup: () => 0,
       now: Date.now(),
-      acceptedMissions: { [mission.id]: { acceptedAt } } as Record<ReturnType<typeof makeId<'MissionId'>>, { acceptedAt: number }> ,
+      acceptedMissions: { [mission.id]: { acceptedAt } } as Record<
+        ReturnType<typeof makeId<'MissionId'>>,
+        { acceptedAt: number }
+      >,
     };
     const removed = purgeExpiredMissions(ctx);
     expect(removed).toContain(mission.id);
-  expect(ctx.acceptedMissions[mission.id]).toBeUndefined();
+    expect(ctx.acceptedMissions[mission.id]).toBeUndefined();
   });
 });

@@ -12,9 +12,15 @@ export interface ValidationResult<T> {
 const ajv = new Ajv({ allErrors: true });
 
 // Precompile schemas
-const missionSchema = JSON.parse(fs.readFileSync(path.join('content', 'schema', 'mission.schema.json'), 'utf8'));
-const narrativeSchema = JSON.parse(fs.readFileSync(path.join('content', 'schema', 'narrativeNode.schema.json'), 'utf8'));
-const economySchema = JSON.parse(fs.readFileSync(path.join('content', 'schema', 'economy.schema.json'), 'utf8'));
+const missionSchema = JSON.parse(
+  fs.readFileSync(path.join('content', 'schema', 'mission.schema.json'), 'utf8'),
+);
+const narrativeSchema = JSON.parse(
+  fs.readFileSync(path.join('content', 'schema', 'narrativeNode.schema.json'), 'utf8'),
+);
+const economySchema = JSON.parse(
+  fs.readFileSync(path.join('content', 'schema', 'economy.schema.json'), 'utf8'),
+);
 
 const validateMission = ajv.compile(missionSchema);
 const validateNarrative = ajv.compile(narrativeSchema);
@@ -22,7 +28,10 @@ const validateEconomy = ajv.compile(economySchema);
 
 function dirFiles(dir: string) {
   if (!fs.existsSync(dir)) return [];
-  return fs.readdirSync(dir).filter(f => f.endsWith('.json')).map(f => path.join(dir, f));
+  return fs
+    .readdirSync(dir)
+    .filter((f) => f.endsWith('.json'))
+    .map((f) => path.join(dir, f));
 }
 
 function stableHash(objs: unknown[]): string {
@@ -30,10 +39,12 @@ function stableHash(objs: unknown[]): string {
   // stringify with stable ordering: sort keys recursively
   const ordered = JSON.stringify(objs, (_k, v) => {
     if (v && typeof v === 'object' && !Array.isArray(v)) {
-      return Object.keys(v).sort().reduce((acc, key) => {
-        acc[key] = (v as any)[key];
-        return acc;
-      }, {} as any);
+      return Object.keys(v)
+        .sort()
+        .reduce((acc, key) => {
+          acc[key] = (v as any)[key];
+          return acc;
+        }, {} as any);
     }
     return v;
   });
@@ -73,17 +84,31 @@ export function loadNarrativeNodes(dir = path.join('content', 'narrative')): Val
   return { items, errors, hash: stableHash(items) };
 }
 
-export function loadEconomyConfig(file = path.join('content', 'economy.json')): ValidationResult<any> {
+export function loadEconomyConfig(
+  file = path.join('content', 'economy.json'),
+): ValidationResult<any> {
   const errors: ValidationResult<any>['errors'] = [];
   if (!fs.existsSync(file)) {
-    return { items: [], errors: [{ file, errors: [{ message: 'missing economy config' } as any] }], hash: '' };
+    return {
+      items: [],
+      errors: [{ file, errors: [{ message: 'missing economy config' } as any] }],
+      hash: '',
+    };
   }
   const raw = fs.readFileSync(file, 'utf8');
   try {
     const json = JSON.parse(raw);
     if (validateEconomy(json)) return { items: [json], errors, hash: stableHash([json]) };
-    return { items: [], errors: [{ file, errors: validateEconomy.errors?.slice() || [] }], hash: '' };
+    return {
+      items: [],
+      errors: [{ file, errors: validateEconomy.errors?.slice() || [] }],
+      hash: '',
+    };
   } catch (e) {
-    return { items: [], errors: [{ file, errors: [{ message: (e as Error).message } as any] }], hash: '' };
+    return {
+      items: [],
+      errors: [{ file, errors: [{ message: (e as Error).message } as any] }],
+      hash: '',
+    };
   }
 }
