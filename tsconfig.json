@@ -2,14 +2,14 @@
   "compilerOptions": {
     "target": "ES2022",
     "useDefineForClassFields": true,
-  "module": "ES2022",
-  "moduleResolution": "Bundler",
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
     "skipLibCheck": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noFallthroughCasesInSwitch": true,
-  "resolveJsonModule": true,
+    "resolveJsonModule": true,
     "jsx": "react-jsx",
     "baseUrl": "./src",
     "paths": {
@@ -18,8 +18,16 @@
       "@persistence/*": ["persistence/*"],
       "@ui/*": ["ui/*"]
     },
-  "types": ["vitest/globals"]
+    "types": ["vitest/globals"]
   },
-  "include": ["src", "tests", "scripts", "content", "vitest.config.ts", "vite.config.ts", "vitest-env.d.ts"],
+  "include": [
+    "src",
+    "tests",
+    "scripts",
+    "content",
+    "vitest.config.ts",
+    "vite.config.ts",
+    "vitest-env.d.ts"
+  ],
   "exclude": ["dist", "node_modules"]
 }

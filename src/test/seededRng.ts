@@ -26,6 +26,6 @@ export function createRng(seed: number): SeededRng {
     },
     clone() {
       return createRng(state);
-    }
+    },
   };
 }

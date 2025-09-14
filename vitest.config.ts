@@ -12,15 +12,15 @@ export default defineConfig({
     reporters: ['default'],
     coverage: {
       reporter: ['text', 'lcov'],
-      provider: 'v8'
-    }
+      provider: 'v8',
+    },
   },
   resolve: {
     alias: {
       '@domain': path.resolve(__dirname, 'src/domain'),
       '@store': path.resolve(__dirname, 'src/store'),
       '@persistence': path.resolve(__dirname, 'src/persistence'),
-      '@ui': path.resolve(__dirname, 'src/ui')
-    }
-  }
+      '@ui': path.resolve(__dirname, 'src/ui'),
+    },
+  },
 });

@@ -3,17 +3,17 @@ module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: ['./tsconfig.json']
+    project: ['./tsconfig.json'],
   },
   env: {
     es2022: true,
     node: true,
-    browser: true
+    browser: true,
   },
   settings: {
     react: {
-      version: 'detect'
-    }
+      version: 'detect',
+    },
   },
   plugins: ['@typescript-eslint', 'react', 'react-hooks', 'import'],
   extends: [
@@ -23,20 +23,20 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:import/recommended',
     'plugin:import/typescript',
-    'prettier'
+    'prettier',
   ],
   overrides: [
     {
       files: ['vite.config.ts', 'vitest.config.ts'],
       parserOptions: { project: null },
       rules: {
-        '@typescript-eslint/no-var-requires': 'off'
-      }
+        '@typescript-eslint/no-var-requires': 'off',
+      },
     },
     {
       files: ['vitest-env.d.ts'],
-      parserOptions: { project: null }
-    }
+      parserOptions: { project: null },
+    },
   ],
   rules: {
     'react/react-in-jsx-scope': 'off',
@@ -50,15 +50,12 @@ module.exports = {
         pathGroups: [
           {
             pattern: '@{domain,store,persistence,ui}*/**',
-            group: 'internal'
-          }
+            group: 'internal',
+          },
         ],
-        pathGroupsExcludedImportTypes: ['builtin']
-      }
+        pathGroupsExcludedImportTypes: ['builtin'],
+      },
     ],
-    'import/no-unresolved': [
-      'error',
-      { ignore: ['^vitest/config$'] }
-    ]
-  }
+    'import/no-unresolved': ['error', { ignore: ['^vitest/config$'] }],
+  },
 };
