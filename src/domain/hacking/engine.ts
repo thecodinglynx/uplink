@@ -6,6 +6,8 @@ import type {
   ToolRunInstance,
   ToolRunId,
 } from '@domain/types';
+import { updateTrace } from './trace';
+import { applyAdaptive } from './adaptive';
 
 // Internal extended tool run with duration tracking
 interface EngineToolRun extends ToolRunInstance {
@@ -17,12 +19,12 @@ let toolRunCounter = 0;
 
 function makeDefenseId(): DefenseId {
   defenseCounter += 1;
-  return (`def_${defenseCounter}`) as DefenseId;
+  return `def_${defenseCounter}` as DefenseId;
 }
 
 function makeToolRunId(): ToolRunId {
   toolRunCounter += 1;
-  return (`tr_${toolRunCounter}`) as ToolRunId;
+  return `tr_${toolRunCounter}` as ToolRunId;
 }
 
 // Minimal RNG (mulberry32) for deterministic ordering / future shuffle use
@@ -61,7 +63,7 @@ export function createSession(
     });
   }
   return {
-    id: (`sess_${missionId}_${Date.now()}`) as any,
+    id: `sess_${missionId}_${Date.now()}` as any,
     missionId,
     defenses,
     toolRuns: [],
@@ -75,9 +77,7 @@ export function createSession(
 }
 
 function activeRunCount(session: HackingSessionInstance): number {
-  return session.toolRuns.filter(
-    (r) => r.startTime > 0 && !r.canceled && r.progress < 1,
-  ).length;
+  return session.toolRuns.filter((r) => r.startTime > 0 && !r.canceled && r.progress < 1).length;
 }
 
 export function queueToolRun(
@@ -139,6 +139,7 @@ export function updateSession(
   now: number,
   concurrencyLimit: number,
 ) {
+  if (session.status !== 'active') return; // no-op if already ended
   // progress active runs
   for (const run of session.toolRuns as EngineToolRun[]) {
     if (run.canceled || run.startTime === 0 || run.progress >= 1) continue;
@@ -163,9 +164,14 @@ export function updateSession(
   }
   // free capacity from canceled runs (not already progressed)
   promoteQueued(session, now, concurrencyLimit);
+  // trace & adaptive
+  updateTrace(session, now);
+  applyAdaptive(session);
   session.lastTick = now;
-  // If all defenses bypassed, mark success
-  if (session.defenses.every((d) => d.status === 'bypassed')) {
+  // Determine terminal states
+  if (session.trace.current >= session.trace.max) {
+    session.status = 'failed';
+  } else if (session.defenses.every((d) => d.status === 'bypassed')) {
     session.status = 'success';
   }
 }

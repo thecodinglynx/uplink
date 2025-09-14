@@ -23,7 +23,9 @@ describe('hacking engine core', () => {
     expect(sessionActiveRuns(session).length).toBe(2);
     // advance time enough to finish first two
     updateSession(session, now + 60, conc);
-    expect(session.defenses.filter((d) => d.status === 'bypassed').length).toBeGreaterThanOrEqual(1);
+    expect(session.defenses.filter((d) => d.status === 'bypassed').length).toBeGreaterThanOrEqual(
+      1,
+    );
     // queued run should have started after completion
     expect(sessionActiveRuns(session).length).toBeLessThanOrEqual(conc);
   });
@@ -38,7 +40,7 @@ describe('hacking engine core', () => {
     const r2 = queueToolRun(session, 'scanner', d1, now, 1000, conc);
     // r2 queued
     expect(sessionActiveRuns(session)).toContain(r1);
-  cancelToolRun(session, r1);
+    cancelToolRun(session, r1);
     updateSession(session, now + 11, conc);
     // r2 should now be active
     expect(sessionActiveRuns(session)).toContain(r2);
